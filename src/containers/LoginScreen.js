@@ -19,7 +19,7 @@ export default class LoginScreen extends Component {
                     </Item>
                 </Form>
                 <Button block info
-                onPress={() => this.props.navigation.navigate('Home')}
+                onPress={() => this.props.navigation.navigate('ParkList')}
                 style = {{ margin : 10}}
                 >
                 <Text>Login</Text>

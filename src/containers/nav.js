@@ -24,7 +24,7 @@ const RootNavigator = StackNavigator({
   ParkList: {
     screen: ParkList,
     navigationOptions: {
-      headerTitle: (<Text style = {{ alignSelf: 'center', fontSize: 20}}>Login</Text>),
+      headerTitle: (<Text style = {{ alignSelf: 'center', fontSize: 20}}>Home</Text>),
     },
   },
 });
