@@ -6,16 +6,23 @@ import {
   View,
   Dimensions
 } from 'react-native';
-import MapView from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 var {GooglePlacesAutocomplete} = require('react-native-google-places-autocomplete');
+import { updateMapMarker } from '../actions/MainActions';
+import { connect } from 'react-redux';
 
 const homePlace = {description: 'Home', geometry: { location: { lat: 42.3969, lng: -71.1224 } }};
-const workPlace = {description: 'Work', geometry: { location: { lat: 42.3, lng: -71.1 } }};
+const workPlace = {description: 'Work', geometry: { location: { lat: 52.3, lng: -61.1 } }};
 
 var screenWidth = Dimensions.get('window').width;
 
-export default class MapViewScreen extends Component {
+class MapViewScreen extends Component {
+    
+
+
+
   render() {
+     console.log(this.props.lat); 
     return (
     <View style={styles.container}>
 
@@ -23,15 +30,15 @@ export default class MapViewScreen extends Component {
         <MapView
             style={styles.map}
             initialRegion={{
-                latitude: 42.3967,
-                longitude: -71.1223,
+                latitude:  -36.8484597,
+                longitude:  174.7633315,
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421,
             }}>
-            <MapView.Marker
+            <Marker
                 coordinate={{
-                    latitude: 42.3967,
-                    longitude: -71.1223
+                    latitude:  -36.8484597,
+                    longitude: 174.7633315
                 }}/>
         </MapView>
 
@@ -46,8 +53,7 @@ export default class MapViewScreen extends Component {
             fetchDetails={true}
             renderDescription={(row) => row.description}    // custom description render
             onPress={(data, details = null) => {    // 'details' is provided when fetchDetails = true
-                console.log(data)
-                console.log(details)
+                this.props.updateMapMarker(details.geometry.location);
             }}
             getDefaultValue={() => {
                 return '';      // text input default value
@@ -145,3 +151,13 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
 });
+
+
+const mapStateToProps = (state) => {
+    console.log(state.auth);
+    const { lat, lng } = state.auth.location;
+    
+    return { lat, lng };
+};
+
+export default connect(mapStateToProps, { updateMapMarker })(MapViewScreen);

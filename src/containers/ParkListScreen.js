@@ -7,6 +7,10 @@ import {
   Dimensions
 } from 'react-native';
 import MapView from 'react-native-maps';
+import { updateMapMarker } from '../actions/MainActions';
+import { connect } from 'react-redux';
+
+
 var {GooglePlacesAutocomplete} = require('react-native-google-places-autocomplete');
 
 const homePlace = {description: 'Home', geometry: { location: { lat: 42.3969, lng: -71.1224 } }};
@@ -14,8 +18,7 @@ const workPlace = {description: 'Work', geometry: { location: { lat: 42.3, lng: 
 
 var screenWidth = Dimensions.get('window').width;
 
-
-export default class ParkListScreen extends Component {
+class ParkListScreen extends Component {
 
     render() {
         return (    
@@ -29,17 +32,20 @@ export default class ParkListScreen extends Component {
             fetchDetails={true}
             renderDescription={(row) => row.description}    // custom description render
             onPress={(data, details = null) => {    // 'details' is provided when fetchDetails = true
-                console.log(data)
-                console.log(details)
+                //console.log(data);
+                //console.log(details.geometry.location);
+                this.props.updateMapMarker(details.geometry.location);
             }}
             getDefaultValue={() => {
                 return '';      // text input default value
             }}
             query={{
                 // available options: https://developers.google.com/places/web-service/autocomplete
-                key: 'AIzaSyAUYfbKtctkIibOgFnNN2x9Xg9i0sVxlhQ',
+               // key: 'AIzaSyAUYfbKtctkIibOgFnNN2x9Xg9i0sVxlhQ',
+                key: 'AIzaSyDIDKRZqs8yz7BU_BR0_Z7aiOpZ85ajbQc',
                 language: 'en',
-                types: 'geocode'
+                types: 'geocode',
+                region: '.nz'
             }}
             styles={{
                 container:{
@@ -81,7 +87,8 @@ export default class ParkListScreen extends Component {
             GooglePlacesSearchQuery={{
                 // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
                 rankby: 'distance',
-                types: 'food'
+                types: 'food',
+                region: '.nz'
             }}
 
             filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3', 'sublocality', 'administrative_area_level_2', 'administrative_area_level_1']}
@@ -100,3 +107,5 @@ export default class ParkListScreen extends Component {
         );
     }
 }
+
+export default connect(null, {updateMapMarker})(ParkListScreen);
