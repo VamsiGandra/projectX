@@ -1,29 +1,23 @@
-import React, { Component } from 'react';
-import {
-  AppRegistry,
-  StyleSheet,
-  Text,
-  View,
-  Dimensions
-} from 'react-native';
-import MapView from 'react-native-maps';
-import { updateMapMarker } from '../actions/MainActions';
-import { connect } from 'react-redux';
-
+import React , { Component } from 'react';
+import { View, Text, Dimensions } from 'react-native';
 
 var {GooglePlacesAutocomplete} = require('react-native-google-places-autocomplete');
+import { connect } from 'react-redux';
+
+import updateParkingLocations from '../actions/MainActions';
 
 const homePlace = {description: 'Home', geometry: { location: { lat: 42.3969, lng: -71.1224 } }};
 const workPlace = {description: 'Work', geometry: { location: { lat: 42.3, lng: -71.1 } }};
 
 var screenWidth = Dimensions.get('window').width;
 
-class ParkListScreen extends Component {
+class SearchBar extends Component {
+
 
     render() {
-        return (    
+        return (
             <View>
-                <GooglePlacesAutocomplete
+            <GooglePlacesAutocomplete
             placeholder='Search location'
             minLength={2}
             autoFocus={false}
@@ -32,9 +26,9 @@ class ParkListScreen extends Component {
             fetchDetails={true}
             renderDescription={(row) => row.description}    // custom description render
             onPress={(data, details = null) => {    // 'details' is provided when fetchDetails = true
-                //console.log(data);
+                console.log(data);
                 //console.log(details.geometry.location);
-                this.props.updateMapMarker(details.geometry.location);
+                //this.props.updateParkingLocations('tst');
             }}
             getDefaultValue={() => {
                 return '';      // text input default value
@@ -103,9 +97,14 @@ class ParkListScreen extends Component {
 
 
         />
-            </View>           
+        </View>
         );
     }
 }
 
-export default connect(null, {updateMapMarker})(ParkListScreen);
+const mapStateToProps = state => {
+
+    return state;
+}
+
+export default connect(mapStateToProps, { updateParkingLocations })(SearchBar);
